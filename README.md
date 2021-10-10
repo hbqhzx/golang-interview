@@ -1,2 +1,2 @@
 # golang-interview
-大厂高频golang面试题，知识点详解及对应八股文整理，全面覆盖golang基础/数据结构与算法/网络/linux/中间件/docker/k8s等等技术点
+「吐血整理：Golang后端技术面试指南」涵盖Golang程序员所需要掌握的核心知识以及高频面试题！！包括：Golang语言基础，操作系统，计算机网络，常用中间件【mysql+redis+es+mq】等。一册在手，大厂我有
