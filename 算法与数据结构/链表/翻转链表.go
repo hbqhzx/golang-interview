@@ -11,3 +11,14 @@ func reverseList(head *ListNode) *ListNode {
 	}
 	return pre
 }
+
+// 递归实现
+func reverseList2(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	reverseList2(head.Next)
+	head.Next.Next = head
+	head.Next = nil
+	return head
+}
