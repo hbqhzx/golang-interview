@@ -1,29 +1,46 @@
 package binaryTree
 
-import "fmt"
+import (
+	"strconv"
+	"strings"
+)
+
+// 第二种解法
+var path []string
+var paths [][]string
 
 func binaryTreePaths(root *TreeNode) []string {
-	path := ""
-	paths := []string{}
-	dfs(root, path, &paths)
-	return paths
+	path = []string{}
+	paths = [][]string{}
+	back(root)
+	res := []string{}
+	for _, p := range paths {
+		res = append(res, strings.Join(p, "->"))
+	}
+	return res
 }
 
-func dfs(tree *TreeNode, path string, paths *[]string) {
-	if tree == nil {
+func back(node *TreeNode) {
+	if node == nil {
 		return
 	}
-	if path != "" {
-		path = fmt.Sprintf("%s->%d", path, tree.Val)
-	} else {
-		path = fmt.Sprintf("%d", tree.Val)
-	}
+	path = append(path, strconv.Itoa(node.Val))
 
-	if tree.Left == nil && tree.Right == nil {
-		*paths = append(*paths, path)
+	if node.Right == nil && node.Left == nil {
+		tmp := make([]string, len(path))
+		copy(tmp, path)
+		paths = append(paths, tmp)
 		return
 	}
 
-	dfs(tree.Left, path, paths)
-	dfs(tree.Right, path, paths)
+	if node.Left != nil {
+		back(node.Left)
+		path = path[:len(path)-1]
+	}
+
+	if node.Right != nil {
+		back(node.Right)
+		path = path[:len(path)-1]
+	}
+
 }

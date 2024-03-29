@@ -2,11 +2,6 @@ package binaryTree
 
 import "math"
 
-//二叉搜索树是一个有序树：
-//
-//若它的左子树不空，则左子树上所有结点的值均小于它的根结点的值；
-//若它的右子树不空，则右子树上所有结点的值
-
 //验证是否是二叉搜索树
 //节点的左子树只包含小于当前节点的数。
 //节点的右子树只包含大于当前节点的数。
@@ -51,4 +46,40 @@ func searchBST(root *TreeNode, val int) *TreeNode {
 	} else {
 		return searchBST(root.Right, val)
 	}
+}
+
+// 二叉搜索树的最小绝对差，中序遍历所有值，然后比较差值
+func getMinimumDifference(root *TreeNode) int {
+	values := inorderTraversal(root)
+	diff := math.MaxInt64
+	for i := 0; i < len(values)-1; i++ {
+		cd := values[i+1] - values[i]
+		if cd < diff {
+			diff = cd
+		}
+	}
+	return diff
+}
+
+// 中序递归逻辑中比较差值
+func getMinimumDifferenceV2(root *TreeNode) int {
+	stack := []*TreeNode{}
+	res := math.MaxInt64
+	var preNode *TreeNode = nil
+	for root != nil || len(stack) != 0 {
+		for root != nil {
+			stack = append(stack, root)
+			root = root.Left
+		}
+		if len(stack) > 0 {
+			root = stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			if preNode != nil {
+				res = min(res, root.Val-preNode.Val)
+			}
+			preNode = root
+			root = root.Right
+		}
+	}
+	return res
 }
