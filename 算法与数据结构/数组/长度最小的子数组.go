@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 //滑动窗口法
 
@@ -13,24 +16,28 @@ import "fmt"
 // 解释：子数组 [4,3] 是该条件下的长度最小的子数组。
 func minSubArrayLen(target int, nums []int) int {
 	sum := 0
-	rlen := 0
-	res := 0
-	for i := 0; i < len(nums); i++ {
-		sum = sum + nums[i]
-		rlen++
-		if sum < target {
-			continue
-		} else {
-			if res < rlen || res == 0 {
-				res = rlen
+	window_start := 0
+	minSubLen := math.MaxInt
+
+	for window_end := 0; window_end < len(nums); window_end++ {
+		sum = sum + nums[window_end]
+
+		for sum >= target {
+			window_len := window_end - window_start + 1
+			if window_len < minSubLen {
+				minSubLen = window_len
 			}
-			sum = sum - nums[i-rlen+1]
-			rlen--
+
+			sum = sum - nums[window_start]
+			window_start++
 		}
 	}
 
-	return res
+	if minSubLen == math.MaxInt {
+		return 0
+	}
 
+	return minSubLen
 }
 
 func main() {
