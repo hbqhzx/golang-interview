@@ -32,6 +32,20 @@ func isValidBST(root *TreeNode) bool {
 	return true
 }
 
+func isValidBST2(root *TreeNode) bool {
+	return helper(root, math.MinInt64, math.MaxInt64)
+}
+
+func helper(root *TreeNode, lower, upper int) bool {
+	if root == nil {
+		return true
+	}
+	if root.Val <= lower || root.Val >= upper {
+		return false
+	}
+	return helper(root.Left, lower, root.Val) && helper(root.Right, root.Val, upper)
+}
+
 // 二叉搜索树中的搜索
 func searchBST(root *TreeNode, val int) *TreeNode {
 	if root == nil {
@@ -82,4 +96,51 @@ func getMinimumDifferenceV2(root *TreeNode) int {
 		}
 	}
 	return res
+}
+
+// 二叉搜索树中的众数
+// 给你一个含重复值的二叉搜索树（BST）的根节点 root ，找出并返回 BST 中的所有 众数（即，出现频率最高的元素）。
+//
+// 如果树中有不止一个众数，可以按 任意顺序 返回。
+//
+// 假定 BST 满足如下定义：
+//
+// 结点左子树中所含节点的值 小于等于 当前节点的值
+// 结点右子树中所含节点的值 大于等于 当前节点的值
+// 左子树和右子树都是二叉搜索树
+
+var maxCount, curCount, preVal int
+var res []int
+
+func findMode(root *TreeNode) []int {
+	maxCount, curCount, preVal = 0, 0, 0
+	res = []int{}
+	if root == nil {
+		return []int{}
+	}
+	dfs(root)
+	return res
+}
+
+func dfs(root *TreeNode) {
+	if root == nil {
+		return
+	}
+	dfs(root.Left)
+
+	if root.Val != preVal {
+		curCount = 1
+	} else {
+		curCount++
+	}
+
+	if curCount > maxCount {
+		maxCount = curCount
+		res = []int{root.Val}
+	} else if curCount == maxCount {
+		res = append(res, root.Val)
+	}
+	preVal = root.Val
+
+	dfs(root.Right)
 }

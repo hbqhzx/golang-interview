@@ -13,6 +13,17 @@ func preorderTraversal(root *TreeNode) []int {
 	return res
 }
 
+func inorderTraversal2(root *TreeNode) []int {
+	res := []int{}
+	if root == nil {
+		return res
+	}
+	res = append(res, preorderTraversal(root.Left)...)
+	res = append(res, root.Val)
+	res = append(res, preorderTraversal(root.Right)...)
+	return res
+}
+
 // 前序  中左右---， 【推荐】入栈顺序，先右后左,画个U作为栈，感受下过程
 func preorderTraversal2(root *TreeNode) []int {
 	res := []int{}
