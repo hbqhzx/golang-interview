@@ -29,3 +29,44 @@ func printNum() {
 	ch1 <- struct{}{}
 	wg.Wait()
 }
+
+func concurrencyPrintNum(worker int, num int) {
+	wg := sync.WaitGroup{}
+	ch := make(chan struct{}, worker)
+	for i := range num {
+		wg.Add(1)
+		ch <- struct{}{}
+		go func(i int) {
+			defer wg.Done()
+			fmt.Println(i)
+			<-ch
+		}(i)
+	}
+	wg.Wait()
+}
+
+func printNumInOrder(num int) {
+	wg := sync.WaitGroup{}
+	numbers := make(chan int, num)
+
+	wg.Add(1)
+
+	go func() {
+		defer wg.Done()
+		for i := 1; i <= num; i++ {
+			numbers <- i
+		}
+		close(numbers)
+	}()
+
+	for n := range numbers {
+		fmt.Println(n)
+	}
+
+	wg.Wait()
+}
+
+func main() {
+	//concurrencyPrintNum(100, 100)
+	printNumInOrder(10)
+}

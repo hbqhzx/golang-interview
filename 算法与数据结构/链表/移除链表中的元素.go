@@ -1,4 +1,4 @@
-package linkTable
+,package linkTable
 
 func removeElements(head *ListNode, val int) *ListNode {
 	preHead := &ListNode{}

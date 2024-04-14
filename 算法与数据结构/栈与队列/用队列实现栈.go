@@ -22,13 +22,12 @@ func (this *MyStack) Push(x int) {
 
 /** Removes the element on top of the stack and returns that element. */
 func (this *MyStack) Pop() int {
-	n := len(this.queue) - 1 //判断长度
-	for n != 0 {             //除了最后一个，其余的都重新添加到队列里
+	for i := len(this.queue) - 1; i > 0; i-- { ////除了最后一个，其余的都重新添加到队列里
 		val := this.queue[0]
 		this.queue = this.queue[1:]
 		this.queue = append(this.queue, val)
-		n--
 	}
+
 	//弹出元素
 	val := this.queue[0]
 	this.queue = this.queue[1:]
